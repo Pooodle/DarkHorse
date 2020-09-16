@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kosa.mapper.ScheduleInfoMapper"> <!-- interface와 mapper가 매핑됨 -->
+	<resultMap id="scheduleInfoResultMap" type="com.kosa.vo.UsersVO">
+		<id property="userSeq" column="user_seq"/><!-- key에 해당하는 것은 id , column(db의 컬럼명), property(VO의 프라퍼티 이름) -->
+		<result property="userId" column="user_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="userPw" column="user_pw"/>
+		<result property="userGubun" column="user_gubun"/>
+		<result property="userMobile" column="user_mobile"/>
+		<result property="userFileName" column="user_filename"/>
+	</resultMap>
+	
+	
+	<select id="usersSelectSQL" resultMap="usersResultMap">
+		select *
+		from users
+	</select>
+	
+	<select id="usersDetailSQL" resultMap="usersResultMap" parameterType="Integer">
+		select *
+		from users
+		where user_seq = #{userSeq}
+	</select>
+	
+	<select id="usersLoginSQL" parameterType="com.kosa.vo.UsersVO" resultMap="usersResultMap">
+		select user_id, user_name, user_mobile, user_gubun
+		from users
+		where user_id = #{userId}
+		and user_pw = #{userPw}
+	</select>
+	
+	<insert id="usersInsertSQL" parameterType="com.kosa.vo.UsersVO">
+		insert into users(user_seq, user_id, user_name, user_pw, user_mobile, user_gubun, mgr_seq, user_filename) 
+		values(seq_users.nextval, #{userId}, #{userName}, #{userPw}, #{userMobile},'u', null, #{userFileName})
+	</insert>
+	
+</mapper>
